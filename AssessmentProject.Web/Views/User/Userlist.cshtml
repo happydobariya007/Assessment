@@ -1,0 +1,77 @@
+<!-- Main Container -->
+<div>
+
+    <!-- Section 1 (Heading & Button) -->
+    <div class="d-flex align-items-center justify-content-between px-xl-5 px-3 py-3">
+        <div>
+            <h2>Users</h2>
+        </div>
+
+        <div class="d-flex gap-3">
+            <div class="d-none d-sm-block">
+                <div class="input-group input-group-md position-relative d-flex align-items-center justify-content-end">
+                    <div>
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search">
+                    </div>
+                    <img src="~/images/search.svg" alt="search-icon" class="position-absolute pe-3">
+                </div>
+            </div>
+
+            <div>
+                    @* <a class="text-white" asp-controller="User" asp-action="CreateUser">
+                        <button type="button" class="btn regular-btn">
+                            + Add User
+                        </button>
+                    </a> *@
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 2 (Table Data) -->
+    <div class="px-3 px-xl-5 pb-5">
+        <div class="bg-white border rounded py-2" style="max-height: 71vh; min-height: 71vh; border">
+            <!-- Table -->
+            <div class="table-responsive data-table px-4" style="max-height: 61vh; min-height: 61vh;">
+                <table class="table">
+                    <thead class="sticky-top z-1">
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Role</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTableBody">
+                        <partial name="_UserListPartial" model="Model" />
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        let currentSortColumn = "UserId";
+        let currentSortOrder = "asc";
+
+        updateUserList(1, currentSortColumn, currentSortOrder);
+        function updateUserList(pageIndex = 1, sortBy = currentSortColumn, sortOrder = currentSortOrder) {
+            const searchKeyword = $("#searchInput").val();
+
+            $.ajax({
+                url: `/User/UserList`,
+                type: "GET",
+                data: { currentPage: pageIndex, searchKeyword: searchKeyword, sortBy: currentSortColumn, sortOrder: currentSortOrder },
+                success: function (data) {
+                    $("#userTableBody").html(data);
+                },
+                error: function () {
+                    toastr.error("Error fetching data.");
+                }
+            });
+        }
+        $("#searchInput").on("keyup", function () {
+            updateUserList(1);
+        });
+    });
+</script>

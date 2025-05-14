@@ -1,0 +1,28 @@
+@{
+    ViewData["Title"] = "Access Denied";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/css/site.css" rel="stylesheet" crossorigin="anonymous">
+</head>
+<body class="login-form d-flex justify-content-center align-items-center vh-100">
+
+    <div class="container w-50 text-center bg-white p-5 rounded">
+        <div class="text-danger display-1">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+        </div>
+        <h1 class="text-danger">Access Denied</h1>
+        <p class="lead">You do not have permission to access this page.</p>
+        <a asp-controller="Home" asp-action="Index" class="btn regular-btn mt-3">Go to Dashboard</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

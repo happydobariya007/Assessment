@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
+body {
+  font-family: "poppins", sans-serif;
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+.main-color{
+  color: black;
+  background-color: rgb(202, 202, 202);
+  /* background-color: #1f6864; */
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: none;
+  border-color: rgb(163, 163, 163);
+}
+.regular-btn {
+  background-color: #0066a7;
+  color: white;
+}
+.regular-btn:hover{
+  background-color: #0066a7 !important;
+  color: white !important;
+}
+.back-btn {
+  border: #0066a7;
+  border-width: 1px;
+  border-style: solid;
+  color: #0066a7 !important;
+}
+
+.error-code {
+  font-size: 150px;
+}
+
+.form-control{
+  box-shadow: none;
+  border-color: rgb(163, 163, 163);
+}

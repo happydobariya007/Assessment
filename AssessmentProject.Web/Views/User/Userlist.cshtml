@@ -7,7 +7,7 @@
             <h2>Users</h2>
         </div>
 
-        <div class="d-flex gap-3">
+        <div class="d-flex p-0 m-0 justify-content-end">
             <div class="d-none d-sm-block">
                 <div class="input-group input-group-md position-relative d-flex align-items-center justify-content-end">
                     <div>
@@ -16,24 +16,21 @@
                     <img src="~/images/search.svg" alt="search-icon" class="position-absolute pe-3">
                 </div>
             </div>
-
-            <div>
-                    @* <a class="text-white" asp-controller="User" asp-action="CreateUser">
-                        <button type="button" class="btn regular-btn">
-                            + Add User
-                        </button>
-                    </a> *@
+            <div class="col-12 col-sm-2 text-nowrap d-flex justify-content-end align-items-end ms-5">
+                <a asp-controller="Home" asp-action="Index"><button type="button" class="btn btn-md back-btn">&lt;
+                        Back</button></a>
             </div>
         </div>
     </div>
 
     <!-- Section 2 (Table Data) -->
     <div class="px-3 px-xl-5 pb-5">
-        <div class="bg-white border rounded py-2" style="max-height: 71vh; min-height: 71vh; border">
+        <div class="bg-white border border-solid rounded py-2"
+            style="max-height: 71vh; min-height: 71vh; border-width: 1px !important; border-color: black !important;">
             <!-- Table -->
             <div class="table-responsive data-table px-4" style="max-height: 61vh; min-height: 61vh;">
                 <table class="table">
-                    <thead class="sticky-top z-1">
+                    <thead class="sticky-top z-1 bg-white">
                         <tr>
                             <th scope="col">Name</th>
                             <th scope="col">Email</th>

@@ -3,6 +3,7 @@ using System;
 using AssessmentProject.Repository.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AssessmentProject.Repository.Migrations
 {
     [DbContext(typeof(AssessmentProjectContext))]
-    partial class AssessmentProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20250514114116_CountryStateCityAdd")]
+    partial class CountryStateCityAdd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

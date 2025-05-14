@@ -14,7 +14,7 @@ public class HomeController : Controller
     {
         _logger = logger;
     }
-    [CustomAuthorize("Admin")]
+    [CustomAuthorize("Admin", "User")]
     public IActionResult Index()
     {
         return View();

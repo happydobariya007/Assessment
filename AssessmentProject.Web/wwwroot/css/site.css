@@ -3,6 +3,7 @@
 
 body {
   font-family: "poppins", sans-serif;
+  background-color: #f1f1f1;
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
@@ -10,7 +11,7 @@ body {
 }
 .main-color{
   color: black;
-  background-color: rgb(202, 202, 202);
+  background-color: #969696;
   /* background-color: #1f6864; */
 }
 
@@ -19,18 +20,18 @@ body {
   border-color: rgb(163, 163, 163);
 }
 .regular-btn {
-  background-color: #0066a7;
+  background-color: #636363;
   color: white;
 }
 .regular-btn:hover{
-  background-color: #0066a7 !important;
+  background-color: rgb(129, 129, 129) !important;
   color: white !important;
 }
 .back-btn {
-  border: #0066a7;
+  border: #969696;
   border-width: 1px;
   border-style: solid;
-  color: #0066a7 !important;
+  color: black !important;
 }
 
 .error-code {

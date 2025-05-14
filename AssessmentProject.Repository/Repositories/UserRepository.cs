@@ -15,7 +15,7 @@ public class UserRepository : IUserRepository
 
     public async Task<Users?> GetUserByEmailAndPassword(string email, string password)
     {
-        Users? user = _context.Users.Include(u => u.Roles).FirstOrDefault(u => u.EmailId == email);
+        Users? user = await _context.Users.Include(u => u.Roles).FirstOrDefaultAsync(u => u.EmailId == email);
         if (user == null || (password != user.Password))
         {
             return null;

@@ -35,15 +35,24 @@ public class UserController : Controller
     /// </exception>
     /// <author>Happy Dobariya</author>
     /// <modifiedby>Happy Dobariya</modifiedby>
-    /// <date>2025-05-11</date>
+    /// <date>2025-05-14</date>
+    [AllowAnonymous]
     [HttpGet]
     public IActionResult Login()
     {
-        if (Request.Cookies["userEmail"] != null)
+        try
         {
-            return RedirectToAction("Index", "Home");
+            if (Request.Cookies["userEmail"] != null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return View();
         }
-        return View();
+        catch (Exception ex)
+        {
+            TempData["Error"] = ex.Message;
+            return View();
+        }
     }
 
     /// <summary>
@@ -61,7 +70,7 @@ public class UserController : Controller
     /// </exception>
     /// <author>Happy Dobariya</author>
     /// <modifiedby>Happy Dobariya</modifiedby>
-    /// <date>2025-03-03</date>
+    /// <date>2025-05-14</date>
     [AllowAnonymous]
     [HttpPost]
     public async Task<IActionResult> Login(LoginVM model)
@@ -86,12 +95,11 @@ public class UserController : Controller
             }
             _userService.SetAuthCookies(user, Response);
             TempData["Success"] = "Login Successfull";
-            ViewBag.UserId = user.UserID;
             return RedirectToAction("Index", "Home");
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            TempData["Error"] = "An unexpected Network error occured.";
+            TempData["Error"] = ex.Message;
             return View();
         }
     }
@@ -110,10 +118,10 @@ public class UserController : Controller
     /// </exception>
     /// <author>Happy Dobariya</author>
     /// <modifiedby>Happy Dobariya</modifiedby>
-    /// <date>2025-03-03</date>
+    /// <date>2025-05-14</date>
 
     [Route("User/Userlist")]
-    [CustomAuthorize("User")]
+    [CustomAuthorize("Admin")]
     [HttpGet]
     public async Task<IActionResult> Userlist(string sortBy, string sortOrder, int currentPage = 1, int pageSize = 10, string searchKeyword = "")
     {
@@ -184,6 +192,4 @@ public class UserController : Controller
 
         return RedirectToAction("Login", "User");
     }
-
-
 }

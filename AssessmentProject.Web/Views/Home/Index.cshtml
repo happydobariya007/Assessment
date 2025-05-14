@@ -1,28 +1,33 @@
-﻿@{
+﻿@using System.Security.Claims
+@{
     ViewData["Title"] = "Home Page";
 }
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 @if (TempData["Success"] != null)
 {
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script type="text/javascript">
         toastr.success("@TempData["Success"]");
     </script>
 }
 @if (TempData["Error"] != null)
 {
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script type="text/javascript">
         toastr.error("@TempData["Error"]");
     </script>
 }
-<div class="text-center">
+
+@{
+    Claim? roleClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role && (c.Value == "1"));
+}
+<div class="text-end pe-5">
     <div>
-        <a asp-action="Userlist" asp-controller="User">
-            <button class="btn regular-btn mt-3">UserList</button>
-        </a>
+        @if (roleClaim != null)
+        {
+            <a asp-action="Userlist" asp-controller="User">
+                <button class="btn regular-btn mt-3">UserList</button>
+            </a>
+        }
     </div>
 </div>

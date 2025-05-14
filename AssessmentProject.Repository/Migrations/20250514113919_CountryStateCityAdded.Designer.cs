@@ -3,6 +3,7 @@ using System;
 using AssessmentProject.Repository.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AssessmentProject.Repository.Migrations
 {
     [DbContext(typeof(AssessmentProjectContext))]
-    partial class AssessmentProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20250514113919_CountryStateCityAdded")]
+    partial class CountryStateCityAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,45 +24,6 @@ namespace AssessmentProject.Repository.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("AssessmentProject.Repository.Models.Cities", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CityName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int?>("StateId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StateId");
-
-                    b.ToTable("Cities");
-                });
-
-            modelBuilder.Entity("AssessmentProject.Repository.Models.Countries", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CountryName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Countries");
-                });
 
             modelBuilder.Entity("AssessmentProject.Repository.Models.Roles", b =>
                 {
@@ -79,28 +43,6 @@ namespace AssessmentProject.Repository.Migrations
                     b.HasKey("RoleId");
 
                     b.ToTable("Roles");
-                });
-
-            modelBuilder.Entity("AssessmentProject.Repository.Models.States", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("CountryId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("StateName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CountryId");
-
-                    b.ToTable("States");
                 });
 
             modelBuilder.Entity("AssessmentProject.Repository.Models.Users", b =>
@@ -163,24 +105,6 @@ namespace AssessmentProject.Repository.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("AssessmentProject.Repository.Models.Cities", b =>
-                {
-                    b.HasOne("AssessmentProject.Repository.Models.States", "State")
-                        .WithMany("Cities")
-                        .HasForeignKey("StateId");
-
-                    b.Navigation("State");
-                });
-
-            modelBuilder.Entity("AssessmentProject.Repository.Models.States", b =>
-                {
-                    b.HasOne("AssessmentProject.Repository.Models.Countries", "Country")
-                        .WithMany("States")
-                        .HasForeignKey("CountryId");
-
-                    b.Navigation("Country");
-                });
-
             modelBuilder.Entity("AssessmentProject.Repository.Models.Users", b =>
                 {
                     b.HasOne("AssessmentProject.Repository.Models.Roles", "Roles")
@@ -192,19 +116,9 @@ namespace AssessmentProject.Repository.Migrations
                     b.Navigation("Roles");
                 });
 
-            modelBuilder.Entity("AssessmentProject.Repository.Models.Countries", b =>
-                {
-                    b.Navigation("States");
-                });
-
             modelBuilder.Entity("AssessmentProject.Repository.Models.Roles", b =>
                 {
                     b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("AssessmentProject.Repository.Models.States", b =>
-                {
-                    b.Navigation("Cities");
                 });
 #pragma warning restore 612, 618
         }

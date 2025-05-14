@@ -8,9 +8,12 @@ public class Users
     public int UserID { get; set; }
     public string FirstName { get; set; }
     public string? LastName { get; set; }
+    public long? ContactNumber { get; set; }
+
     public DateTime CreatedOn { get; set; }
 
     public int CreatedBy { get; set; }
+
 
     public int? ModifiedBy { get; set; }
 

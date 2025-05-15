@@ -68,7 +68,6 @@
             type: "GET",
             data: { concertId: selected },
             success: function (response) {
-                ticketPrice = parseFloat(response);
                 $(".pricePerTicket").text(ticketPrice.toFixed(2));
                 calculateSubtotal();
             },
@@ -85,6 +84,9 @@
 
     function calculateSubtotal() {
         const seats = parseInt($("#BookedSeats").val()) || 0;
+        ticketPrice = $(".pricePerTicket").text();
+        console.log(seats);
+        console.log(ticketPrice);
         const subtotal = seats * ticketPrice;
         $(".subtotal-value").text(subtotal.toFixed(2));
     }

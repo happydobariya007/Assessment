@@ -4,6 +4,7 @@
 @model PaginationVM<Concerts>;
 @{
     Claim? roleClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role && (c.Value == "1"));
+    Claim? roleClaimForUser = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role && (c.Value == "2"));
 }
 @if (Model.Data != null && Model.Data.Any())
 {
@@ -32,9 +33,12 @@
                     <a asp-controller="Concert" asp-action="ConcertDetails" asp-route-concertId="@c.ConcertID">
                         <img type="button" src="~/images/eye-svgrepo-com.svg" alt="info">
                     </a>
-                    <a id="bookTicketsButton" data-concertid="@c.ConcertID">
-                        <img type="button" src="~/images/booking.svg" alt="info">
-                    </a>
+                    @if (roleClaimForUser != null)
+                    {
+                        <a id="bookTicketsButton" data-concertid="@c.ConcertID">
+                            <img type="button" src="~/images/booking.svg" alt="info">
+                        </a>
+                    }
                 </div>
             </td>
         </tr>

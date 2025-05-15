@@ -127,6 +127,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     var globalConcertId;
+    let required = 0;
+    let discount = 0;
+
     $(document).ready(function () {
         let currentSortColumn = "UserId";
         let currentSortOrder = "asc";
@@ -179,7 +182,28 @@
                     toastr.error("Failed to load form.");
                 }
             });
-
+            $.ajax({
+                url: "/Concert/GetRequiredTicketsByConcertId",
+                type: "GET",
+                data: { concertId: concertId },
+                success: function (response) {
+                    required = response;
+                },
+                error: function () {
+                    toastr.error("Failed to load form.");
+                }
+            });
+            $.ajax({
+                url: "/Concert/GetDiscountByConcertId",
+                type: "GET",
+                data: { concertId: concertId },
+                success: function (response) {
+                    discount = response;
+                },
+                error: function () {
+                    toastr.error("Failed to load form.");
+                }
+            });
         });
     });
 </script>

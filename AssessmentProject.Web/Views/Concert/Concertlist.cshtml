@@ -1,0 +1,185 @@
+@using System.Security.Claims
+@if (TempData["Success"] != null)
+{
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.success("@TempData["Success"]");
+    </script>
+}
+@if (TempData["Error"] != null)
+{
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.error("@TempData["Error"]");
+    </script>
+}
+
+@{
+    Claim? roleClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role && (c.Value == "1"));
+}
+
+<!-- Main Container -->
+<div>
+    <!-- Section 1 (Heading & Button) -->
+    <div class="d-flex align-items-center justify-content-between px-xl-5 px-3 py-3">
+        <div>
+            <h2>Concerts</h2>
+        </div>
+
+        <div class="d-flex p-0 m-0 justify-content-end">
+            <div class="d-none d-sm-block">
+                <div class="input-group input-group-md position-relative d-flex align-items-center justify-content-end">
+                    <div>
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search">
+                    </div>
+                    <img src="~/images/search.svg" alt="search-icon" class="position-absolute pe-3">
+                </div>
+            </div>
+            <div class="d-flex justify-content-end gap-5">
+                @if (roleClaim != null)
+                {
+                    <div class="col-12 col-sm-2 text-nowrap d-flex justify-content-end align-items-end ms-2">
+                        <a asp-controller="Concert" asp-action="CreateConcert"><button type="button"
+                                class="btn btn-md back-btn">
+                                Add Concert</button></a>
+                    </div>
+                }
+                <div class="col-12 col-sm-2 text-nowrap d-flex justify-content-end align-items-end ms-2">
+                    <a asp-controller="Home" asp-action="Index"><button type="button" class="btn btn-md back-btn">&lt;
+                            Back</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 2 (Table Data) -->
+    <div class="px-3 px-xl-5 pb-5">
+        <div class="bg-white border border-solid rounded py-2"
+            style="max-height: 71vh; min-height: 71vh; border-width: 1px !important; border-color: black !important;">
+            <!-- Table -->
+            <div class="table-responsive data-table px-4" style="max-height: 61vh; min-height: 61vh;">
+                <table class="table">
+                    <thead class="sticky-top z-1 bg-white">
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col">Artist Name</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Time</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Total Seats</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="concertTableBody">
+                        <partial name="_ConcertListPartial" model="Model" />
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal For Delete -->
+<div class="modal fade" id="deleteConcert" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="deleteConcertLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConcertLabel">Delete Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex flex-column align-items-center gap-3">
+                    <img src="~/images/warning-solid-svgrepo-com.svg" alt="warning-icon">
+                    <span>Are you sure you want to delete this concert?</span>
+                    <!-- Form that posts to DeleteConcert action -->
+                    <form asp-controller="Concert" asp-action="DeleteConcert" method="post">
+                        <input type="hidden" id="concertIdToDelete" name="concertId" />
+                        <div class="d-flex align-items-center gap-2">
+                            <button type="submit" id="deleteConcertButton" class="btn regular-btn">Yes</button>
+                            <button type="button" class="btn back-btn" data-bs-dismiss="modal">No</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Book Tickets Modal -->
+<div class="modal fade" id="bookTickets" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">
+                    Book Tickets
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    var globalConcertId;
+    $(document).ready(function () {
+        let currentSortColumn = "UserId";
+        let currentSortOrder = "asc";
+
+        updateConcertList(1, currentSortColumn, currentSortOrder);
+        function updateConcertList(pageIndex = 1, sortBy = currentSortColumn, sortOrder = currentSortOrder) {
+            const searchKeyword = $("#searchInput").val();
+
+            $.ajax({
+                url: `/Concert/Concertlist`,
+                type: "GET",
+                data: { currentPage: pageIndex, searchKeyword: searchKeyword },
+                success: function (data) {
+                    $("#concertTableBody").html(data);
+                },
+                error: function () {
+                    toastr.error("Error fetching data.");
+                }
+            });
+        }
+        $("#searchInput").on("keyup", function () {
+            updateConcertList(1);
+        });
+
+        $(document).on("click", "#bookTicketsButton", function () {
+            var concertId = $(this).data("concertid");
+            globalConcertId = concertId;
+            console.log(concertId);
+            $.ajax({
+                url: "/Concert/BookTickets",
+                type: "GET",
+                data: { concertId: concertId },
+                success: function (response) {
+                    $("#bookTickets .modal-body").html(response);
+                    var modal = new bootstrap.Modal(document.getElementById('bookTickets'));
+                    modal.show();
+                    $.ajax({
+                        url: "/Concert/GetPriceByConcertId",
+                        type: "GET",
+                        data: { concertId: concertId },
+                        success: function (response) {
+                            $("#bookTickets .pricePerTicket").text(response);
+                        },
+                        error: function () {
+                            toastr.error("Failed to load form.");
+                        }
+                    });
+                },
+                error: function () {
+                    toastr.error("Failed to load form.");
+                }
+            });
+
+        });
+    });
+</script>

@@ -1,0 +1,24 @@
+@using AssessmentProject.Repository.Models;
+@using AssessmentProject.Repository.ViewModels;
+@model PaginationVM<Users>;
+
+@if (Model.Data != null && Model.Data.Any())
+{
+    @foreach (var p in Model.Data)
+    {
+        <tr>
+            <td class="pt-3">@p.FirstName</td>
+            <td class="pt-3">@p.EmailId</td>
+            <td class="pt-3">@p.Role.RoleName</td>
+        </tr>
+    }
+}
+else
+{
+    <td class="pt-3">Sorry!! No Users Found with this username</td>
+}
+
+<input type="hidden" id="totalUsers" value="@Model.TotalUsers" />
+<input type="hidden" id="totalPages" value="@Model.TotalPages" />
+<input type="hidden" id="pageSize" value="@Model.PageSize" />
+<input type="hidden" id="currentPageIndex" value="@Model.CurrentPageIndex" />

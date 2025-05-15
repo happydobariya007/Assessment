@@ -1,0 +1,52 @@
+@using AssessmentProject.Repository.Models;
+@using AssessmentProject.Repository.ViewModels;
+@using System.Security.Claims
+@model PaginationVM<Concerts>;
+@{
+    Claim? roleClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role && (c.Value == "1"));
+}
+@if (Model.Data != null && Model.Data.Any())
+{
+    @foreach (var c in Model.Data)
+    {
+        <tr>
+            <td class="pt-3">@c.Title</td>
+            <td class="pt-3">@c.ArtistName</td>
+            <td class="pt-3">@c.DateAndTime.ToString("dd-MM-yyyy")</td>
+            <td class="pt-3">@c.DateAndTime.ToString("HH:mm")</td>
+            <td class="pt-3">@c.Price</td>
+            <td class="pt-3">@c.TotalSeats</td>
+
+            <td class="pt-3">
+                <div class="d-flex align-items-center gap-2">
+                    @if (roleClaim != null)
+                    {
+                        <a asp-controller="Concert" asp-action="EditConcert" asp-route-concertId="@c.ConcertID">
+                            <img src="~/images/pen.svg" alt="edit-icon">
+                        </a>
+                        <button class="btn" data-bs-target="#deleteConcert" data-bs-toggle="modal"
+                            onclick="document.getElementById('concertIdToDelete').value = '@c.ConcertID'">
+                            <img type="button" src="~/images/trash.svg" alt="delete">
+                        </button>
+                    }
+                    <a asp-controller="Concert" asp-action="ConcertDetails" asp-route-concertId="@c.ConcertID">
+                        <img type="button" src="~/images/eye-svgrepo-com.svg" alt="info">
+                    </a>
+                    <a id="bookTicketsButton" data-concertid="@c.ConcertID">
+                        <img type="button" src="~/images/booking.svg" alt="info">
+                    </a>
+                </div>
+            </td>
+        </tr>
+    }
+}
+else
+{
+    <td class="pt-3">Sorry!! No Records Found</td>
+}
+
+
+<input type="hidden" id="totalUsers" value="@Model.TotalUsers" />
+<input type="hidden" id="totalPages" value="@Model.TotalPages" />
+<input type="hidden" id="pageSize" value="@Model.PageSize" />
+<input type="hidden" id="currentPageIndex" value="@Model.CurrentPageIndex" />

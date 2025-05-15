@@ -1,0 +1,91 @@
+@using AssessmentProject.Repository.Models
+@model AssessmentProject.Repository.ViewModels.BookTicketsVM;
+<form id="bookTicketsForm">
+    <div class="col-12 col-lg form-floating mb-3 mb-lg-0">
+        <select class="form-select" id="selectConcert" aria-label="Concerts" name="ConcertID" asp-for="ConcertID"
+            asp-items="@(ViewBag.Concerts != null && ((List<Concerts>)ViewBag.Concerts).Count > 0 ? new SelectList(ViewBag.Concerts, "ConcertID", "Title") : new SelectList(new List<Concerts>()))">
+            <option value="">Select Concert</option>
+        </select>
+        <label for="concertSelect" class="ms-2">Concert*</label>
+        <span asp-validation-for="ConcertID" class="text-danger"></span>
+    </div>
+    <div class="mt-3">
+        pricePerTicket : <span class="pricePerTicket"></span>
+    </div>
+    <div class="form-floating mt-3">
+        <input asp-for="BookedSeats" id="BookedSeats" type="number" class="form-control">
+        <label for="floatingInput">No of Tickets*</label>
+        <span asp-validation-for="BookedSeats" class="text-danger"></span>
+    </div>
+    <div class="d-flex flex-column align-items-end mt-3">
+        <div>
+            <span class="subtotal">SubTotal :</span> <span class="subtotal-value">0.00</span>
+        </div>
+        <div>
+            Discount : 0%
+        </div>
+        <div>
+            Total : <span>0.00</span>
+        </div>
+    </div>
+    <div class="d-flex pt-3 align-items-center gap-2 justify-content-end">
+        <button type="submit" class="btn regular-btn">
+            Book
+        </button>
+        <button type="button" class="btn back-btn" data-bs-dismiss="modal">
+            Cancel
+        </button>
+    </div>
+</form>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    $(document).on("change", "#selectConcert", function () {
+        const selected = this.value;
+        console.log(selected);
+        $.ajax({
+            url: "/Concert/GetPriceByConcertId",
+            type: "GET",
+            data: { concertId: selected },
+            success: function (response) {
+                $("#bookTickets .pricePerTicket").text(response);
+            },
+            error: function () {
+                toastr.error("Failed to load form.");
+            }
+        });
+    });
+</script>
+<script>
+    let ticketPrice = 0;
+
+    // When concert changes, get price and update UI
+    $(document).on("change", "#selectConcert", function () {
+        const selected = this.value;
+        $.ajax({
+            url: "/Concert/GetPriceByConcertId",
+            type: "GET",
+            data: { concertId: selected },
+            success: function (response) {
+                ticketPrice = parseFloat(response);
+                $(".pricePerTicket").text(ticketPrice.toFixed(2));
+                calculateSubtotal();
+            },
+            error: function () {
+                toastr.error("Failed to load form.");
+            }
+        });
+    });
+
+    // When number of tickets changes
+    $(document).on("input", "#BookedSeats", function () {
+        calculateSubtotal();
+    });
+
+    function calculateSubtotal() {
+        const seats = parseInt($("#BookedSeats").val()) || 0;
+        const subtotal = seats * ticketPrice;
+        $(".subtotal-value").text(subtotal.toFixed(2));
+    }
+</script>

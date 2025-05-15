@@ -1,0 +1,29 @@
+@using AssessmentProject.Repository.Models;
+@model AssessmentProject.Repository.Models.Concerts;
+<div class="container px-xl-5 px-lg-3 px-2 ">
+    <!-- Section 1 (Heading & Button) -->
+    <div class="d-flex align-items-center justify-content-between mx-xl-4 px-lg-3 px-2 mx-2 py-3">
+        <div>
+            <h2>Concert Details</h2>
+        </div>
+        <div>
+            <a asp-controller="Concert" asp-action="Concertlist">
+                <button type="button" class="btn btn-md back-btn">&lt;
+                    Back</button></a>
+        </div>
+    </div>
+    <!-- Section 2 (Order Summary) -->
+    <div class="bg-white border rounded mx-xl-4 px-lg-3 px-2 mx-lg-3 mx-2 py-3 fs-5" style="border-width: 1px !important; border-color: black !important;">
+        <div class="d-flex flex-column gap-3">
+            <div><span class="fw-bold">Title: </span>@Model.Title</div>
+            <div><span class="fw-bold">ArtistName: </span>@Model.ArtistName</div>
+            <div><span class="fw-bold">Venue:</span> @Model.Venue</div>
+            <div><span class="fw-bold">Date:</span> @Model.DateAndTime.ToString("dd-MM-yyyy")</div>
+            <div><span class="fw-bold">Time:</span> @Model.DateAndTime.ToString("HH:mm")</div>
+            <div><span class="fw-bold">Price:</span> @Model.Price</div>
+            <div><span class="fw-bold">TotalSeats:</span> @Model.TotalSeats</div>
+            <div><span class="fw-bold">Applicable Discount On purchase of <span class="text-danger">@Model.RequiredTicketsForDiscount</span>
+                Tickets: </span><span class="text-danger">@Model.Discount%</span></div>
+        </div>
+    </div>
+</div>

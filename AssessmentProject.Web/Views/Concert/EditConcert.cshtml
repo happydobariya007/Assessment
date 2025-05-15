@@ -1,0 +1,113 @@
+@model AssessmentProject.Repository.ViewModels.EditConcertVM;
+@if (TempData["Success"] != null)
+{
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.success("@TempData["Success"]");
+    </script>
+}
+@if (TempData["Error"] != null)
+{
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.error("@TempData["Error"]");
+    </script>
+}
+<div class="d-flex justify-content-center align-items-center">
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Section 1 (Heading & Button) -->
+        <div class="d-flex align-items-center justify-content-between px-lg-4 px-2 py-3">
+            <div class="d-none d-sm-block">
+                <h2>Edit Concert</h2>
+            </div>
+            <div class="col-12 col-sm-2  d-flex justify-content-end align-items-end">
+                <a asp-controller="Concert" asp-action="Concertlist">
+                <button type="button" class="btn btn-md back-btn">&lt;
+                        Back</button></a>
+            </div>
+        </div>
+
+        <!-- Section 2 (Main Form) -->
+        <form asp-controller="Concert" asp-action="EditConcert" method="post">
+            <div class="row mx-lg-4 mx-2 py-4 px-2  bg-white border rounded" style="border-width: 1px !important; border-color: black !important;">
+                <input type="hidden" name="concertId" value="@Model.ConcertID" />
+
+                <!-- Title -->
+                <div class="col-12 col-sm-6 ">
+                    <div class="form-floating mt-3">
+                        <input type="text" class="form-control" placeholder="John"
+                            asp-for="Title" maxlength="25">
+                        <label for="floatingInput">Title*</label>
+                    </div>
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <!-- Artist Name -->
+                <div class="col-12 col-sm-6">
+                    <div class="form-floating mt-3">
+                        <input type="text" class="form-control" placeholder="Doe" asp-for="ArtistName" maxlength="25">
+                        <label for="floatingInput">Artist Name*</label>
+                    </div>
+                    <span asp-validation-for="ArtistName" class="text-danger"></span>
+                </div>
+
+                <!-- Venue -->
+                <div class="col-12 col-sm-6">
+                    <div class="form-floating mt-3">
+                        <input type="text" class="form-control" placeholder="name@example.com"
+                            asp-for="Venue" maxlength="50">
+                        <label for="floatingInput">Venue*</label>
+                    </div>
+                    <span asp-validation-for="Venue" class="text-danger"></span>
+                </div>
+
+                <!-- Date And Time -->
+                    <div class="col-12 col-lg-6">
+                        <div class="input-group input-group-md">
+                            <div class="form-floating mt-3">
+                                <input type="datetime-local" id="DateAndTimeForConcert" class="form-control" placeholder="Date And Time" asp-for="DateAndTime">
+                                <label for="DateAndTimeForConcert">Date And Time</label>
+                            </div>
+                        </div>
+                    </div>
+
+                <!-- Price -->
+                <div class="col-md-6 col-xl-4 col-xs-12">
+                    <div class="form-floating mt-3">
+                        <input type="number" class="form-control" placeholder="9999999999"
+                            asp-for="Price">
+                        <label for="floatingInput">Price*</label>
+                    </div>
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+
+                <!-- Total Seats -->
+                <div class="col-md-6 col-xl-4 col-xs-12">
+                    <div class="form-floating mt-3">
+                        <input type="number" class="form-control" placeholder="9999999999"
+                            asp-for="TotalSeats">
+                        <label for="floatingInput">TotalSeats*</label>
+                    </div>
+                    <span asp-validation-for="TotalSeats" class="text-danger"></span>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex gap-3 py-3 pt-4 justify-content-end">
+                    <input type="submit" class="btn regular-btn" value="Update"/>
+                    <a asp-controller="Concert" asp-action="Concertlist">
+                    <button type="button" class="btn back-btn">
+                        Cancel</button></a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>

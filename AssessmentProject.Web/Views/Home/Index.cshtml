@@ -1,0 +1,38 @@
+﻿@using System.Security.Claims
+@{
+    ViewData["Title"] = "Home Page";
+}
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+@if (TempData["Success"] != null)
+{
+    <script type="text/javascript">
+        toastr.success("@TempData["Success"]");
+    </script>
+}
+@if (TempData["Error"] != null)
+{
+    <script type="text/javascript">
+        toastr.error("@TempData["Error"]");
+    </script>
+}
+
+@{
+    Claim? roleClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role && (c.Value == "1"));
+}
+<div class="text-end pe-5 d-flex justify-content-end gap-3">
+    <div>
+        <a asp-action="Concertlist" asp-controller="Concert">
+            <button class="btn regular-btn mt-3">Concerts</button>
+        </a>
+    </div>
+    <div>
+        @if (roleClaim != null)
+        {
+            <a asp-action="Userlist" asp-controller="User">
+                <button class="btn regular-btn mt-3">Users</button>
+            </a>
+        }
+    </div>
+</div>
